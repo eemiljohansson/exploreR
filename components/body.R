@@ -8,22 +8,35 @@
 body <- dashboardBody(
   tabItems(
     
-    ###################
-    # First tab content
-    ###################
+    ######################################
+    # First tab content - Information Page
+    ######################################
     
     tabItem(tabName = "info",
             h2("Information Page"),
-            p("Details and information about the data and the analysis.")
+            p("The exploreR app is a simple Shiny app that allows you to explore Olink data."),
+            uiOutput("howToList"),
+            actionButton("addRow", "Add New Step", icon = icon("plus")),
+            textAreaInput("newStep", "New Step", value = "", placeholder = "Type new instruction here..."),
+            br(),
+            p("Credentials:
+                Emil Johansson, PhD at KTH Royal Institute of Technology
+                Josefin Kenrick, PhD at KTH Royal Institute of Technology
+                Jonathan Cedernaes, M.D. PhD at Uppsala University")
     ),
     
-    ####################
-    # Second tab content
-    ####################
+    ################################################
+    # Second tab content - Data up-loader and viewer
+    ################################################
     
     tabItem(tabName = "data",
             h2("Data Preview"),
-            DT::dataTableOutput("dataTable")
+            fluidRow(
+              fileInput("file", "Choose CSV File",
+                        accept = ".csv"),
+              actionButton("view", "View My Data", icon = icon("eye"))
+            ),
+            DTOutput("dataTable") # Output slot for the data table
     ),
     
     ####################
@@ -38,6 +51,16 @@ body <- dashboardBody(
                   plotOutput("plot1", height = 250))
             )
     ),
+    
+    #######
+    # Plots
+    #######
+    
+    tabItem(tabName = "volcano", h2("Volcano Plot")),
+    tabItem(tabName = "boxplot", h2("Boxplot")),
+    tabItem(tabName = "scatterplot", h2("Scatterplot")),
+    tabItem(tabName = "piechart", h2("Pie Chart")),
+    tabItem(tabName = "barplot", h2("Barplot")),
     
     ####################
     # Fourth tab content
