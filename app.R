@@ -9,6 +9,8 @@ library(shinydashboard)
 library(ggplot2)
 library(dplyr)
 library(DT)  # For displaying data tables interactively
+library(limma)
+library(purrr)
 
 source('./ui.R')
 source('./server.R')

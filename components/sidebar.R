@@ -7,6 +7,7 @@ sidebar <- dashboardSidebar(
   sidebarMenu(
     menuItem("Info", tabName = "info", icon = icon("info-circle")),
     menuItem("Data", tabName = "data", icon = icon("database")),
+    menuItem("Limma", tabName = "limma", icon = icon("box")),
     menuItem("Plot", tabName = "plot", icon = icon("chart-bar"),
       menuSubItem("Volcano Plot", tabName = "volcano", icon = icon("volcano")),
       menuSubItem("Boxplot", tabName = "boxplot", icon = icon("square")),
