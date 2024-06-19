@@ -4,7 +4,7 @@ library(dplyr)
 library(progressr)
 
 # Source the function script
-source("limma_functions.R")
+source("functions.R")
 
 # Define UI for the Shiny app
 ui <- fluidPage(
@@ -67,18 +67,18 @@ server <- function(input, output, session) {
     covariates <- input$selectedCovariates
     differentialVariable <- input$differentialVariable
     
+    revisedData <- checkData(data)
+    
     # Separate expression data and design matrix based on user selection
-    exprData <- data |> 
+    exprData <- revisedData |> 
       select(-all_of(c(covariates, differentialVariable)))
     
-    designMatrix <- data |>  
+    designMatrix <- revisedData |>  
       select(all_of(covariates)) |> 
-      mutate(!!differentialVariable := data[[differentialVariable]])
+      mutate(!!differentialVariable := revisedData[[differentialVariable]])
     
     reviseddesignMatrix <- validateDesignMatrix(designMatrix)
-    print(reviseddesignMatrix)
-    print(exprData)
-    
+
     results <- run_limma_analysis(exprData, covariates, reviseddesignMatrix)
     # Output the results as a DataTable
     output$resultsTable <- renderDT({
