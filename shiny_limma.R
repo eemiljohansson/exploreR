@@ -2,8 +2,9 @@ library(shiny)
 library(DT)
 library(dplyr)
 library(progressr)
+
 # Source the function script
-source("run_limma.R")
+source("limma_functions.R")
 
 # Define UI for the Shiny app
 ui <- fluidPage(
@@ -69,40 +70,21 @@ server <- function(input, output, session) {
     # Separate expression data and design matrix based on user selection
     exprData <- data |> 
       select(-all_of(c(covariates, differentialVariable)))
+    
     designMatrix <- data |>  
       select(all_of(covariates)) |> 
       mutate(!!differentialVariable := data[[differentialVariable]])
     
-    # Store ID column separately for later use
-    ids <- data$ID
+    reviseddesignMatrix <- validateDesignMatrix(designMatrix)
+    print(reviseddesignMatrix)
+    print(exprData)
     
-    # Use withProgress to show progress bar
-    output$progress <- renderText({
-      "Running analysis..."
-    })
-    
-    progress <- shiny::Progress$new()
-    progress$set(message = "Running limma analysis", value = 0)
-    on.exit(progress$close())
-    
-    # Simulate steps with progress
-    progress$inc(0.3, detail = "Fitting model")
-    fit <- lmFit(exprData, designMatrix)
-    
-    progress$inc(0.3, detail = "Computing statistics")
-    fit <- eBayes(fit)
-    
-    progress$inc(0.4, detail = "Creating results table")
-    results <- topTable(fit, adjust.method = "BH", number = Inf)
-    
+    results <- run_limma_analysis(exprData, covariates, reviseddesignMatrix)
     # Output the results as a DataTable
     output$resultsTable <- renderDT({
       datatable(results, options = list(pageLength = 10))
     })
     
-    output$progress <- renderText({
-      "Analysis complete!"
-    })
   })
 }
 
