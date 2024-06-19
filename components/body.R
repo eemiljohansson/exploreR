@@ -46,11 +46,11 @@ body <- dashboardBody(
     tabItem(tabName = "limma",
             h2("Run Differential Expression Analysis"),
             fluidRow(
-              fileInput("file", "Choose CSV File in wide format",
+              fileInput("dataFile", "Choose CSV File in wide format",
                         accept = ".csv")),
             uiOutput("covariateSelection"),
             uiOutput("differentialVariableSelection"),
-            actionButton("Go!", "Run Analysis"),
+            actionButton("runAnalysis", "Run Analysis"),
             DTOutput("resultsTable"), # Output slot for limma results
             
     ),

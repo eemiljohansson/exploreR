@@ -7,6 +7,7 @@
 source('./components/header.R')
 source('./components/sidebar.R')
 source('./components/body.R')
+source('./functions.R')
 
 
 ui <- dashboardPage(

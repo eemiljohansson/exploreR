@@ -14,6 +14,7 @@ library(purrr)
 
 source('./ui.R')
 source('./server.R')
+source('./functions.R')
 
 # Run the application 
 shinyApp(ui = ui, server = server)
