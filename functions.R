@@ -7,14 +7,15 @@ checkData <- function(data){
   rows_with_na <- sum(apply(is.na(data), 1, any))
   
   # Print number of rows with NA values
-  cat("Number of rows with NA values:", rows_with_na, "\n","Not good! Dropping all rows with NA values", "\n")
+  message <- cat("Number of rows with NA values:", rows_with_na, "\n","Not good! Dropping all rows with NA values", "\n")
   
   # Filter out rows with NA values
   revisedData <- data %>%
     filter_all(all_vars(!is.na(.)))
   
   # Print the filtered tibble
-  print(revisedData)
+  return(revisedData)
+  print(message)
 } 
   
 validateDesignMatrix <- function(designMatrix) {
